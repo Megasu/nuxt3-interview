@@ -10,13 +10,16 @@ const form = reactive({
 
 // 表单提交
 const onSubmit = async () => {
-  // 发送 axios 请求
+  // 发送 axios 请求 - utils 目录的方法自动导入
   await request({
     method: 'POST',
     url: '/user/register',
     data: form,
   })
-  alert('注册成功')
+  // vant 提示注册成功 - vant 组件库的方法自动导入
+  showSuccessToast('注册成功')
+  // 跳转到登录页面，相当于 router.push('/login')   router.replace('/login')
+  navigateTo('/login', { replace: true })
 }
 </script>
 
