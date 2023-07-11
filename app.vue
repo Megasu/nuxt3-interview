@@ -13,3 +13,9 @@ useSeoMeta({
   <!-- NuxtPage 路由占位 相当于 router-view -->
   <NuxtPage />
 </template>
+
+<style>
+:root {
+  --van-primary-color: #ff7d00 !important;
+}
+</style>

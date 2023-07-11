@@ -3,7 +3,9 @@
 </script>
 
 <template>
-  <h1>收藏页</h1>
+  <NuxtLayout name="tabbar">
+    <h1>收藏页</h1>
+  </NuxtLayout>
 </template>
 
 <style scoped>
