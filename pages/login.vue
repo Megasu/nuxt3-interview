@@ -18,6 +18,9 @@ const onSubmit = async () => {
   })
   // ❌ 保存 token 信息 - 不能用 localStorage，因为 Nuxt 服务端没有 localStorage 
   // localStorage.setItem('token', res.data.token)
+  
+  // ✅ 保存 token 信息 - 用 cookie，因为 Nuxt 服务端有 cookie
+  setToken(res.data.token)
   // vant 提示注册成功 - vant 组件库的方法自动导入
   showSuccessToast('登录成功')
   // 跳转到首页页面，相当于 router.push('/')   router.replace('/')
