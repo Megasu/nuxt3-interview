@@ -1,4 +1,7 @@
 <script setup lang="ts">
+// nuxt 项目中，utils 的方法无需引入，直接使用即可
+// import request from '@/utils/request'
+
 // 表单数据
 const form = reactive({
   username: import.meta.env.DEV ? 'itheima' : '',
@@ -7,7 +10,13 @@ const form = reactive({
 
 // 表单提交
 const onSubmit = async () => {
-  //
+  // 发送 axios 请求
+  await request({
+    method: 'POST',
+    url: '/user/register',
+    data: form,
+  })
+  alert('注册成功')
 }
 </script>
 
