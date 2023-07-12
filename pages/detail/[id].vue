@@ -1,5 +1,9 @@
 <script setup lang="ts">
-// 
+// 获取动态路由参数
+const { params } = useRoute()
+
+// 根据页面参数获取面经详情
+const article = await useRequest('/interview/show', { params })
 </script>
 
 <template>
@@ -8,27 +12,23 @@
       left-text="返回"
       @click-left="$router.back()"
       fixed
-      title="面经详情"
+      title="面经详细"
     />
     <header class="header">
-      <h1>大标题</h1>
+      <h1>{{ article.stem }}</h1>
       <p>
-        2050-04-06 | 300 浏览量 | 222 点赞数
+        {{ article.createdAt }} | {{ article.views }} 浏览量 |
+        {{ article.likeCount }} 点赞数
       </p>
       <p>
-        <img src="头像" alt="" />
-        <span>作者</span>
+        <img :src="article.avatar" alt="" />
+        <span>{{ article.creator }}</span>
       </p>
     </header>
-    <main class="body">
-      <p>我是内容</p>
-      <p>我是内容</p>
-      <p>我是内容</p>
-      <p>我是内容</p>
-    </main>
+    <main class="body" v-html="article.content"></main>
     <div class="opt">
-      <van-icon class="active" name="like-o"/>
-      <van-icon name="star-o"/>
+      <van-icon :class="{ active: article.likeFlag }" name="like-o" />
+      <van-icon :class="{ active: article.collectFlag }" name="star-o" />
     </div>
   </div>
 </template>
@@ -70,7 +70,7 @@
       box-shadow: 2px 2px 10px #ccc;
       font-size: 18px;
       &.active {
-        background: #FEC635;
+        background: #fec635;
         color: #fff;
       }
     }
