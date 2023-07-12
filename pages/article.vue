@@ -5,14 +5,24 @@ const list = ref<any[]>([])
 // 获取面经列表
 const getList = async () => {
   // axios 问题，不会等服务端渲染完成，直接返回空页面，对 SEO 不友好
-  const res = await request({
+  // const res = await request({
+  //   method: 'GET',
+  //   url: '/interview/query',
+  //   headers: {
+  //     Authorization: `Bearer ${getToken()}`,
+  //   },
+  // })
+  // list.value.push(...res.data.rows)
+
+  // ✅ 通过 useFetch 获取数据，会等服务端渲染完成，再返回页面，并且前端不会再发送多余请求
+  const res = await useFetch<any>('/interview/query', {
     method: 'GET',
-    url: '/interview/query',
+    baseURL: 'http://interview-api-t.itheima.net/h5/',
     headers: {
       Authorization: `Bearer ${getToken()}`,
     },
   })
-  list.value.push(...res.data.rows)
+  list.value.push(...res.data.value.data.rows)
 }
 
 getList()
