@@ -4,6 +4,16 @@ import type { ArticleItem } from 'types/article'
 // 面经列表
 const list = ref<ArticleItem[]>([])
 
+// 分页查询参数
+const pageParams = reactive({
+  current: 1,
+  pageSize: 10,
+  sorter: 'weight_desc',
+})
+
+const loading = ref(false)
+const finished = ref(false)
+
 // 获取面经列表
 const getList = async () => {
   // axios 问题，不会等服务端渲染完成，直接返回空页面，对 SEO 不友好
@@ -27,8 +37,23 @@ const getList = async () => {
   // list.value.push(...res.data.value.data.rows)
 
   // ✅ 基于 useFetch 二次封装的 useRequest，更加简洁
-  const res = await useRequest('/interview/query', { params: { pageSize: 5 } })
+  const res = await useRequest('/interview/query', {
+    params: pageParams,
+    watch: false,
+  })
+  // 数组追加
   list.value.push(...res.rows)
+
+  // 页码累加
+  pageParams.current++
+
+  // 加载状态结束
+  loading.value = false
+
+  // 如果数据已经全部加载完毕
+  if (pageParams.current > res.pageTotal) {
+    finished.value = true
+  }
 }
 
 getList()
@@ -42,7 +67,15 @@ getList()
         <a href="javascript:;">最新</a>
         <div class="logo"><img src="@/assets/logo.png" alt="" /></div>
       </nav>
-      <ArticleItemCom v-for="item in list" :key="item.id" :item="item" />
+      <!-- vant 列表组件 -->
+      <van-list
+        v-model:loading="loading"
+        :finished="finished"
+        finished-text="没有更多了"
+        @load="getList"
+      >
+        <ArticleItemCom v-for="item in list" :key="item.id" :item="item" />
+      </van-list>
     </div>
   </NuxtLayout>
 </template>
