@@ -1,9 +1,15 @@
 <script setup lang="ts">
+import type { ArticleDetail } from '@/types/article'
 // 获取动态路由参数
 const { params } = useRoute()
 
 // 根据页面参数获取面经详情
-const article = await useRequest('/interview/show', { params })
+const article = await useRequest<ArticleDetail>('/interview/show', { params })
+
+// SEO 优化 - 详情页标题
+useSeoMeta({
+  title: `黑马面经 - ${article.stem}`,
+})
 </script>
 
 <template>

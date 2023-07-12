@@ -5,7 +5,7 @@ import type { UseFetchOptions } from 'nuxt/app'
  * @param url 请求地址
  * @param options 请求配置
  */
-export const useRequest = async (
+export const useRequest = async <T = any>(
   url: string,
   options?: UseFetchOptions<any>,
 ) => {
@@ -23,6 +23,7 @@ export const useRequest = async (
   if (error.value) {
     return Promise.reject(error.value)
   } else {
-    return data.value.data
+    // 通过 as 断言，告诉 ts data.value.data 是 T 类型
+    return data.value.data as T
   }
 }
