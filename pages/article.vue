@@ -15,14 +15,18 @@ const getList = async () => {
   // list.value.push(...res.data.rows)
 
   // ✅ 通过 useFetch 获取数据，会等服务端渲染完成，再返回页面，并且前端不会再发送多余请求
-  const res = await useFetch<any>('/interview/query', {
-    method: 'GET',
-    baseURL: 'http://interview-api-t.itheima.net/h5/',
-    headers: {
-      Authorization: `Bearer ${getToken()}`,
-    },
-  })
-  list.value.push(...res.data.value.data.rows)
+  // const res = await useFetch<any>('/interview/query', {
+  //   method: 'GET',
+  //   baseURL: 'http://interview-api-t.itheima.net/h5/',
+  //   headers: {
+  //     Authorization: `Bearer ${getToken()}`,
+  //   },
+  // })
+  // list.value.push(...res.data.value.data.rows)
+
+  // ✅ 基于 useFetch 二次封装的 useRequest，更加简洁
+  const res = await useRequest('/interview/query', { params: { pageSize: 5 } })
+  list.value.push(...res.rows)
 }
 
 getList()
